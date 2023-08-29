@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-const articles = await Astro.glob("../pages/articles/*.md");
+const articles = await Astro.glob("../pages/articles/*.mdx");
 ---
 
 <Layout title="わいのブログ">
@@ -8,20 +8,23 @@ const articles = await Astro.glob("../pages/articles/*.md");
     <header>
       <h3><a class="title" href="/">わいのブログ</a></h3>
     </header>
-    <p>
-      当ブログは、日々の出来事や、技術的なことを書いていくブログです。また、
-      <a href="https://astro.build/" target="_blank">Astro</a>
-      というフレームワークを使って作られています。
-    </p>
+    <p>当ブログは、日々の出来事や、技術的なことを書いていくブログです。</p>
     <!--コンテンツエリア -->
     <div class="content-area">
-      {
-        articles.map((post) => (
-          <li>
-            <a href={post.url}>{post.frontmatter.title}</a>
-          </li>
-        ))
-      }
+      <ul class="vertical-list">
+        {
+          articles.map((post) => (
+            <li class="list-item">
+              <time class="date" datetime={post.frontmatter.date}>
+                {post.frontmatter.date}
+              </time>
+              <div class="title">
+                <a href={post.url}>{post.frontmatter.title}</a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </main>
 
@@ -53,6 +56,23 @@ const articles = await Astro.glob("../pages/articles/*.md");
       line-height: 1;
       text-align: center;
       margin-bottom: 1em;
+    }
+    .vertical-list {
+      list-style: none;
+      padding: 0;
+    }
+    .list-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+    .date {
+      font-size: 1rem;
+      color: rgb(156, 163, 175);
+    }
+    .title a {
+      color: white;
+      text-decoration: none;
     }
     .text-gradient {
       background-image: var(--accent-gradient);
