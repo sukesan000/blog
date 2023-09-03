@@ -1,6 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 const articles = await Astro.glob("../pages/articles/*.mdx");
+const sortedArticles = articles.sort((a, b) => {
+  const aDate = new Date(a.frontmatter.pubDate);
+  const bDate = new Date(b.frontmatter.pubDate);
+  return bDate.getTime() - aDate.getTime();
+});
 ---
 
 <Layout title="わいのブログ">
@@ -13,10 +18,13 @@ const articles = await Astro.glob("../pages/articles/*.mdx");
     <div class="content-area">
       <ul class="vertical-list">
         {
-          articles.map((post) => (
+          sortedArticles.map((post) => (
             <li class="list-item">
-              <time class="date" datetime={post.frontmatter.date}>
-                {post.frontmatter.date}
+              <time
+                class="date"
+                datetime={post.frontmatter.pubDate.slice(0, 10)}
+              >
+                {post.frontmatter.pubDate.slice(0, 10)}
               </time>
               <div class="title">
                 <a href={post.url}>{post.frontmatter.title}</a>
